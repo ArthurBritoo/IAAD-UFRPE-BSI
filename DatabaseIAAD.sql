@@ -2,6 +2,7 @@
 --
 -- Host: localhost    Database: consultasmedicas
 -- ------------------------------------------------------
+-- Server version 8.0.44
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,7 +15,9 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+--
 -- Table structure for table `clinica`
+--
 
 DROP TABLE IF EXISTS `clinica`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -29,7 +32,24 @@ CREATE TABLE `clinica` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `clinica`
+--
+
+LOCK TABLES `clinica` WRITE;
+/*!40000 ALTER TABLE `clinica` DISABLE KEYS */;
+INSERT INTO `clinica` VALUES 
+(1,'Clínica Saúde Total','Av. Paulista, 1000','11999998888','contato@saudetotal.com'),
+(2,'Centro Médico Viver Bem','Rua das Flores, 230','11988887777','viverbem@saude.com'),
+(3,'Hospital Dia Zona Sul','Av. Santo Amaro, 4500','1133334444','atendimento@hospdia.com'),
+(4,'Clínica Oftalmológica Visão','Rua Augusta, 500','1132221111','contato@visaoclinica.com'),
+(5,'Espaço Saúde Mulher','Rua dos Pinheiros, 120','11977776666','agendamento@saudemulher.com');
+/*!40000 ALTER TABLE `clinica` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `log_auditoria`
+--
 
 DROP TABLE IF EXISTS `log_auditoria`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -42,23 +62,56 @@ CREATE TABLE `log_auditoria` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `log_auditoria`
+--
+
+LOCK TABLES `log_auditoria` WRITE;
+/*!40000 ALTER TABLE `log_auditoria` DISABLE KEYS */;
+-- Tabela inicia vazia, aguardando o Trigger ser criado futuramente
+/*!40000 ALTER TABLE `log_auditoria` ENABLE KEYS */;
+UNLOCK TABLES;
+--
 -- Table structure for table `medico`
+--
 
 DROP TABLE IF EXISTS `medico`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `medico` (
-  `CodMed` int NOT NULL AUTO_INCREMENT,
+  `CodMed` varchar(20) NOT NULL,
   `NomeMed` varchar(50) NOT NULL,
   `Sexo` char(1) DEFAULT NULL,
   `Telefone` varchar(13) DEFAULT NULL,
   `Email` varchar(254) DEFAULT NULL,
   `Especialidade` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`CodMed`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `medico`
+--
+
+LOCK TABLES `medico` WRITE;
+/*!40000 ALTER TABLE `medico` DISABLE KEYS */;
+INSERT INTO `medico` VALUES 
+('MED01','Dr. Roberto Silva','M','11988887777','roberto@medico.com','Cardiologia'),
+('MED02','Dra. Amanda Vieira','F','11999991111','amanda@medico.com','Pediatria'),
+('MED03','Dr. Lucas Carvalho','M','11988882222','lucas@medico.com','Oftalmologia'),
+('MED04','Dra. Fernanda Lima','F','11977773333','fernanda@medico.com','Dermatologia'),
+('MED05','Dra. Carla Dias','F','11966665555','carla@medico.com','Ginecologia'),
+('MED06','Dr. Bruno Souza','M','11955554444','bruno@medico.com','Ortopedia'),
+('MED07','Dra. Juliana Paes','F','11944443333','juliana@medico.com','Cardiologia'),
+('MED08','Dr. Ricardo Oliveira','M','11933332222','ricardo@medico.com','Neurologia'),
+('MED09','Dra. Patrícia Santos','F','11922221111','patricia@medico.com','Pediatria'),
+('MED10','Dr. Marcos Vinícius','M','11911110000','marcos@medico.com','Clínico Geral');
+/*!40000 ALTER TABLE `medico` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `paciente`
+--
 
 DROP TABLE IF EXISTS `paciente`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -74,69 +127,9 @@ CREATE TABLE `paciente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
--- Table structure for table `consulta`
-
-DROP TABLE IF EXISTS `consulta`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `consulta` (
-  `IdConsulta` int NOT NULL AUTO_INCREMENT,
-  `CodCli` int DEFAULT NULL,
-  `CodMed` int DEFAULT NULL,
-  `CpfPaciente` char(11) DEFAULT NULL,
-  `Data_Hora` datetime DEFAULT NULL,
-  PRIMARY KEY (`IdConsulta`),
-  KEY `fk_clinica` (`CodCli`),
-  KEY `fk_medico` (`CodMed`),
-  KEY `fk_paciente` (`CpfPaciente`),
-  CONSTRAINT `fk_clinica` FOREIGN KEY (`CodCli`) REFERENCES `clinica` (`CodCli`),
-  CONSTRAINT `fk_medico` FOREIGN KEY (`CodMed`) REFERENCES `medico` (`CodMed`),
-  CONSTRAINT `fk_paciente` FOREIGN KEY (`CpfPaciente`) REFERENCES `paciente` (`CpfPaciente`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
--- Dumping data for table `clinica`
-
-LOCK TABLES `clinica` WRITE;
-/*!40000 ALTER TABLE `clinica` DISABLE KEYS */;
-INSERT INTO `clinica` VALUES 
-(1,'Clínica Saúde Total','Av. Paulista, 1000','11999998888','contato@saudetotal.com'),
-(2,'Centro Médico Viver Bem','Rua das Flores, 230','11988887777','viverbem@saude.com'),
-(3,'Hospital Dia Zona Sul','Av. Santo Amaro, 4500','1133334444','atendimento@hospdia.com'),
-(4,'Clínica Oftalmológica Visão','Rua Augusta, 500','1132221111','contato@visaoclinica.com'),
-(5,'Espaço Saúde Mulher','Rua dos Pinheiros, 120','11977776666','agendamento@saudemulher.com');
-/*!40000 ALTER TABLE `clinica` ENABLE KEYS */;
-UNLOCK TABLES;
-
--- Dumping data for table `log_auditoria`
-
-LOCK TABLES `log_auditoria` WRITE;
-/*!40000 ALTER TABLE `log_auditoria` DISABLE KEYS */;
-
--- Tabela começa vazia, pra quando o Trigger ser criado poder receberr dados
-
-/*!40000 ALTER TABLE `log_auditoria` ENABLE KEYS */;
-UNLOCK TABLES;
-
--- Dumping data for table `medico`
-
-LOCK TABLES `medico` WRITE;
-/*!40000 ALTER TABLE `medico` DISABLE KEYS */;
-INSERT INTO `medico` VALUES 
-(1,'Dr. Roberto Silva','M','11988887777','roberto@medico.com','Cardiologia'),
-(2,'Dra. Amanda Vieira','F','11999991111','amanda@medico.com','Pediatria'),
-(3,'Dr. Lucas Carvalho','M','11988882222','lucas@medico.com','Oftalmologia'),
-(4,'Dra. Fernanda Lima','F','11977773333','fernanda@medico.com','Dermatologia'),
-(5,'Dra. Carla Dias','F','11966665555','carla@medico.com','Ginecologia'),
-(6,'Dr. Bruno Souza','M','11955554444','bruno@medico.com','Ortopedia'),
-(7,'Dra. Juliana Paes','F','11944443333','juliana@medico.com','Cardiologia'),
-(8,'Dr. Ricardo Oliveira','M','11933332222','ricardo@medico.com','Neurologia'),
-(9,'Dra. Patrícia Santos','F','11922221111','patricia@medico.com','Pediatria'),
-(10,'Dr. Marcos Vinícius','M','11911110000','marcos@medico.com','Clínico Geral');
-/*!40000 ALTER TABLE `medico` ENABLE KEYS */;
-UNLOCK TABLES;
-
+--
 -- Dumping data for table `paciente`
+--
 
 LOCK TABLES `paciente` WRITE;
 /*!40000 ALTER TABLE `paciente` DISABLE KEYS */;
@@ -158,32 +151,57 @@ INSERT INTO `paciente` VALUES
 ('99999999999','Maria Clara','2005-05-05','F','11933336666','maria@email.com');
 /*!40000 ALTER TABLE `paciente` ENABLE KEYS */;
 UNLOCK TABLES;
+--
+-- Table structure for table `consulta`
+--
 
+DROP TABLE IF EXISTS `consulta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `consulta` (
+  `IdConsulta` int NOT NULL AUTO_INCREMENT,
+  `CodCli` int DEFAULT NULL,
+  `CodMed` varchar(20) DEFAULT NULL,
+  `CpfPaciente` char(11) DEFAULT NULL,
+  `Data_Hora` datetime DEFAULT NULL,
+  PRIMARY KEY (`IdConsulta`),
+  KEY `fk_clinica` (`CodCli`),
+  KEY `fk_medico` (`CodMed`),
+  KEY `fk_paciente` (`CpfPaciente`),
+  CONSTRAINT `fk_clinica` FOREIGN KEY (`CodCli`) REFERENCES `clinica` (`CodCli`),
+  CONSTRAINT `fk_medico` FOREIGN KEY (`CodMed`) REFERENCES `medico` (`CodMed`),
+  CONSTRAINT `fk_paciente` FOREIGN KEY (`CpfPaciente`) REFERENCES `paciente` (`CpfPaciente`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `consulta`
+--
+
 LOCK TABLES `consulta` WRITE;
 /*!40000 ALTER TABLE `consulta` DISABLE KEYS */;
 INSERT INTO `consulta` VALUES 
-(1,1,1,'12345678900','2023-12-20 14:30:00'),
-(2,1,1,'12345678900','2023-12-25 10:00:00'),
-(3,2,3,'34512389765','2025-12-10 16:40:00'),
-(4,2,3,'58961234752','2025-12-11 10:00:00'),
-(5,3,4,'11122233344','2025-11-25 14:30:00'),
-(6,1,2,'58961234752','2025-11-26 09:00:00'),
-(7,4,5,'12312312312','2025-11-27 08:00:00'),
-(8,4,5,'22233344455','2025-11-27 09:00:00'),
-(9,5,6,'33344455566','2025-11-28 10:00:00'),
-(10,5,6,'44455566677','2025-11-28 11:00:00'),
-(11,1,7,'55566677788','2025-11-29 14:00:00'),
-(12,2,8,'66677788899','2025-12-01 15:00:00'),
-(13,3,9,'77788899900','2025-12-02 09:00:00'),
-(14,3,9,'88899900011','2025-12-02 10:00:00'),
-(15,4,10,'99900011122','2025-12-03 11:00:00'),
-(16,1,1,'99988877766','2025-12-05 16:00:00'),
-(17,2,3,'99999999999','2025-12-06 08:30:00'),
-(18,3,4,'12345678900','2025-12-07 13:00:00'),
-(19,5,5,'34512389765','2026-01-10 14:00:00'),
-(20,1,6,'11122233344','2026-01-11 09:00:00'),
-(21,2,7,'22233344455','2026-01-12 10:00:00');
+(1,1,'MED01','12345678900','2023-12-20 14:30:00'),
+(2,1,'MED01','12345678900','2023-12-25 10:00:00'),
+(3,2,'MED03','34512389765','2025-12-10 16:40:00'),
+(4,2,'MED03','58961234752','2025-12-11 10:00:00'),
+(5,3,'MED04','11122233344','2025-11-25 14:30:00'),
+(6,1,'MED02','58961234752','2025-11-26 09:00:00'),
+(7,4,'MED05','12312312312','2025-11-27 08:00:00'),
+(8,4,'MED05','22233344455','2025-11-27 09:00:00'),
+(9,5,'MED06','33344455566','2025-11-28 10:00:00'),
+(10,5,'MED06','44455566677','2025-11-28 11:00:00'),
+(11,1,'MED07','55566677788','2025-11-29 14:00:00'),
+(12,2,'MED08','66677788899','2025-12-01 15:00:00'),
+(13,3,'MED09','77788899900','2025-12-02 09:00:00'),
+(14,3,'MED09','88899900011','2025-12-02 10:00:00'),
+(15,4,'MED10','99900011122','2025-12-03 11:00:00'),
+(16,1,'MED01','99988877766','2025-12-05 16:00:00'),
+(17,2,'MED03','99999999999','2025-12-06 08:30:00'),
+(18,3,'MED04','12345678900','2025-12-07 13:00:00'),
+(19,5,'MED05','34512389765','2026-01-10 14:00:00'),
+(20,1,'MED06','11122233344','2026-01-11 09:00:00'),
+(21,2,'MED07','22233344455','2026-01-12 10:00:00');
 /*!40000 ALTER TABLE `consulta` ENABLE KEYS */;
 UNLOCK TABLES;
 
