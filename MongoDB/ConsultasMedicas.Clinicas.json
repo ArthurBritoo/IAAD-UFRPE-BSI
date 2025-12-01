@@ -1,0 +1,14 @@
+[{
+  "_id": "0000001",
+  "nome": "Saúde Plus",
+  "endereco": "Av. Rosa e Silva, 406, Graças",
+  "telefone": "(81) 4002-3633",
+  "email": "saudeplus@mail.com"
+},
+{
+  "_id": "0000002",
+  "nome": "Visão Recife",
+  "endereco": "Av. Governador Agamenon Magalhães, 810",
+  "telefone": "(81) 3042-1112",
+  "email": "visaorecife@mall.com"
+}]
