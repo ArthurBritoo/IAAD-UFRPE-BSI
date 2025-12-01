@@ -20,7 +20,7 @@ CREATE TRIGGER trg_auditoria_consulta
 AFTER INSERT ON consulta
 FOR EACH ROW
 BEGIN
-    --vai registrar uma mensagem na tabela de log_auditoria
+    -- vai registrar uma mensagem na tabela de log_auditoria
     INSERT INTO log_auditoria (Mensagem, DataOcorrencia)
     VALUES (CONCAT('Nova consulta agendada. ID: ', NEW.IdConsulta, ' - Paciente: ', NEW.CpfPaciente), NOW());
 END$$
